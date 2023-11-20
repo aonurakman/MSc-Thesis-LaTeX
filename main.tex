@@ -1,0 +1,55 @@
+%!TEX TS-program = xelatex
+%!TEX encoding = UTF-8 Unicode
+
+\newcommand{\myscore}[2]{\mathit{sc}^{({#1})}({#2})}
+
+% Load Thesis Class
+\documentclass{DEIThesis}
+
+\title{Design of a Third-Order Word Embedding Model Using Vector Projections}
+
+\author{Ahmet Onur Akman}
+\studentId{2044006}
+
+% Advisor
+\advisor{Prof. Giorgio Satta}
+
+% If you are co-advised
+\coadvisor{Prof. Augusto Ferrante}
+\coadvisorsUniversity{University of Padova}
+
+\coadvisortwo{Prof. Giorgio Maria Di Nunzio}
+\coadvisorsUniversitytwo{University of Padova}
+
+\university{University of Padova}
+\mastername{Computer Engineering}
+\academicYear{2022/2023}
+
+\begin{filecontents*}[overwrite]{\jobname.xmpdata}
+    \Title{Design of a Third-Order Word Embedding Model Using Vector Projections}
+    \Author{Ahmet Onur Akman}
+    \Language{en-EN}
+    \Keywords{Computer Engineering\sep LaTeX}
+\end{filecontents*}
+
+% Document
+
+\begin{document}
+    % The front matter (Cover, ToC, Abstract, etc...)
+    \frontmatter
+
+    % The main content
+    \mainmatter
+
+    \include{chapters/01_introduction}
+    \include{chapters/02_stateofart}
+    %\include{chapters/02_soa}
+    \include{chapters/03_design}
+    \include{chapters/04_implementation}
+    \include{chapters/05_experiments}
+    \include{chapters/06_conclusions}
+    %\include{chapters/00_cheatsheet}
+    
+    % Bibliography, appendix, acknowledges, etc...
+    \backmatter
+\end{document}

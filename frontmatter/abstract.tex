@@ -1,0 +1,12 @@
+%!TEX root = ../main.tex
+\begin{abstract}
+
+Geometrical representations of words are building blocks in the field of natural language processing, especially for tasks such as word sense disambiguation, sentiment analysis, and language modeling. The efforts for developing static word embeddings go back to the 1980s, and currently there are many models in the literature, each approaching the problem with a different methodology.
+
+In this study, we propose a novel static word embedding model that is learned using orthogonal projections of vectors to represent contextual relationships. Our approach employs a third-order model and leverages the contrastive learning paradigm, in which a positive training sample consists of a target word and two context words, and a negative sample consists of one target word, one context word, and a randomly sampled noise word from the corpus. We developed a unique geometrical loss function that effectively minimizes the difference between the orthogonal projections of the selected context words onto the target word and maximizes the difference between the orthogonal projections of the context word and the negative samples onto the target word. 
+
+This approach is distinct from the traditional static embedding models, and results in word embeddings that effectively capture contextual information in a higher-order, projective manner. Evaluations conducted on benchmark datasets demonstrate the promising performance of our model in capturing word semantics and contextual relationships. 
+
+This study contains the development of the new loss function, implementation and training of the neural model, text processing, word embedding evaluation methods, and application and evaluation of several machine learning techniques for performance improvements. We demonstrate the advantages and disadvantages of this new approach, report the results of conducted tests leveraging data visualization tools, and finally provide a strong starting point for further studies to explore in depth the theoretical underpinnings of this approach and evaluate its performance in downstream natural language processing tasks.
+
+\end{abstract}

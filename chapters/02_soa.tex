@@ -1,0 +1,59 @@
+\chapter{State of the Art}
+\label{chp:stateOfArt}
+
+Geometrical representations of words are the building blocks in the field of \ac{NLP}, for higher-level tasks such as word sense disambiguation, sentiment analysis, and language modeling. The efforts for developing static word embeddings go all the way back to the 1980s, and currently there are many models in the literature each approaching the problem with a different methodology.
+
+In this chapter, we will list and briefly describe some of the most known static word embedding models. This background will be later useful to demonstrate how our approach differs from others.
+
+\section{Word2Vec}
+
+One work that established a fundamental step in the field of \ac{NLP} is Word2Vec, which was presented in the article \cite{w2v} by Tomas Mikolov, Kai Chen, Greg Corrado, and Jeffrey Dean. More precisely, in this article, the authors present a shallow neural network-based training of two different architectures, namely, \ac{CBOW} and \ac{SG}.
+
+\subsection{Skip-Gram}
+
+We briefly describe the \ac{SGNS} embedding model introduced in \cite{w2v} trained using the negative-sampling procedure presented in \cite{w2v2}. 
+
+\ac{SGNS} seeks to represent each word $w \in V_W$ and each context $c \in V_C$ as d-dimensional vectors $\overrightarrow{w}$ and $\overrightarrow{c}$, such that words that are “similar” to each other will have similar vector representations. It does so by trying to maximize a function of the product $\overrightarrow{w} \cdot \overrightarrow{c}$ for $(w, c)$ pairs that occur in $D$, and minimize it for negative examples: $(w, c_N)$ pairs that do not necessarily occur in $D$. The negative examples are created by stochastically corrupting observed $(w, c)$ pairs from $D$ - hence the name “negative sampling”. For each observation of $(w, c)$, SGNS draws $k$ contexts from the empirical unigram distribution $P_D(c) = \frac{\#(c)}{|D|}$. 
+
+
+
+In the skip-gram model, each word $w \in W$ is associated with a vector $v_w \in \mathbb{R}_d$ and similarly, each context $c \in C$ is represented as a vector $v_c \in \mathbb{R}_d$, where $W$ is the words vocabulary, $C$ is the contexts vocabulary, and $d$ is the embedding dimensionality. The entries in the vectors are latent, and treated as parameters to be learned. Loosely speaking, we seek parameter values (that is, vector representations for both words and contexts) such that the dot product $v_w \cdot v_c$ associated with “good” word-context pairs is maximized.
+
+More specifically, the negative-sampling objective assumes a dataset $D$ of observed $(w, c)$ pairs of words $w$ and the contexts $c$, which appeared in a large body of text. Consider a word-context pair $(w, c)$. Did this pair come from the data? We denote by $p(D = 1|w, c)$ the probability that $(w, c)$ came from the data, and by $p(D = 0|w, c) = 1 - p(D = 1|w, c)$ the probability that $(w, c)$ did not. The distribution is modeled as:
+
+
+\[
+p(D = 1|w, c) = \frac{1}{1+e^{-v_w \cdot v_c}}
+\]
+
+where $v_w$ and $v_c$ (each a $d$-dimensional vector) are
+the model parameters to be learned. We seek to
+maximize the log-probability of the observed pairs
+belonging to the data, leading to the objective:
+
+\[
+{\arg\max}_{v_w,v_c} \sum_{(w,c) \in D}\log\frac{1}{1+e^{-v_c \cdot v_w}}
+\]
+
+This objective admits a trivial solution in which $p(D = 1|w, c)=1$ for every pair $(w, c)$. This can be easily achieved by setting $v_c = v_w$ and $v_c \cdot v_w = K$ for all $c$, $w$, where $K$ is large enough number.
+
+In order to prevent the trivial solution, the objective is extended with $(w, c)$ pairs for which $p(D = 1|w, c)$ must be low, i.e. pairs that are not in the data, by generating the set $D'$ of random $(w, c)$ pairs (assuming they are all incorrect), yielding the negative-sampling training objective:
+
+\[
+{\arg\max}_{v_w,v_c} \left ( \prod_{(w,c) \in D}p(D=1|c,w)\prod_{(w,c) \in D'}p(D=0|c,w) \right )
+\]
+
+which can be rewritten as:
+
+\[
+{\arg\max}_{v_w,v_c} \left ( \sum_{(w,c) \in D} \log{\sigma(v_c \cdot v_w)}  \sum_{(w,c) \in D'} \log{\sigma(-v_c \cdot v_w)}  \right )
+\]
+
+where $\sigma(x)=1/(1+e^x)$. The objective is trained
+in an online fashion using stochastic-gradient updates over the corpus $D \cap D'$.
+
+The negative samples $D'$ can be constructed in various ways. We follow: for each $(w, c) \in D$ we construct $n$ samples $(w, c_1),...,(w, c_n)$, where $n$ is a hyperparameter and each $c_j$ is drawn according to its unigram distribution raised to the 3/4 power.
+
+Optimizing this objective makes observed word-context pairs have similar embeddings while scattering unobserved pairs. Intuitively, words that appear in similar contexts should have similar embeddings.
+
+
